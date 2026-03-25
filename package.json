@@ -1,13 +1,19 @@
 {
   "dependencies": {
     "express": "^5.2.1",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "pg": "^8.20.0"
   },
+
+
   "name": "job-portal-backend",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "type": "module",
+     "start": "node index.js",
+  "dev": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
