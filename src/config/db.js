@@ -1,7 +1,9 @@
 const { Pool } = require("pg");
 
 const pool = new Pool({
-  connectionString: 'postgresql://postgres:vaishnavipatil%40gmail.com@db.tzosbsmwqnogyqdqscbb.supabase.co:5432/postgres',
+  // connectionString: 'postgresql://postgres:vaishnavipatil%40gmail.com@db.tzosbsmwqnogyqdqscbb.supabase.co:5432/postgres',
+    connectionString: 'postgresql://postgres:vaishnavipatil%40gmail.com@db.tzosbsmwqnogyqdqscbb.supabase.co:5432/job_portal',
+
   ssl: {
     rejectUnauthorized: false
   }
