@@ -1,19 +1,17 @@
-const {Pool} = require('pg');
-const pool =new Pool({
-    user:'postgres',
-    host:'db.tzosbsmwqnogyqdqscbb.supabase.co',
-    database:'student_db',
-    password:'vaishnavipatil@gmail.com',
-    port:5432
-    
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  // connectionString: 'postgresql://postgres:vaishnavipatil%40gmail.com@db.tzosbsmwqnogyqdqscbb.supabase.co:5432/postgres',
+    connectionString: 'postgresql://postgres:vaishnavipatil%40gmail.com@db.tzosbsmwqnogyqdqscbb.supabase.co:5432/job_portal',
+
+  ssl: {
+    rejectUnauthorized: false
+  }
 });
 
-pool.connect((err)=>{
-    if(err){
-        console.log("Db error",error);
-    }else{
-        console.log("Db connect");
-    }
-})
+pool.connect()
+  .then(() => console.log(" Database connected"))
+  .catch((err) => console.log("DB connection error:", err.message));
 
-module.exports=pool;
+module.exports = pool;
+
