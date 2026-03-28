@@ -1,4 +1,7 @@
+
+const crypto = require("crypto");
 const pool = require('../config/db');
+
 const bcrypt = require('bcryptjs');
 
 // Registration
@@ -62,6 +65,53 @@ const login = async (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+
+
 };
 
-module.exports = { register, login };
+const forgotPassword = async (req, res) => {
+
+  const { email } = req.body;
+
+  if (!email) {
+    return res.status(400).json({ error: "Email is required" });
+  }
+
+  try {
+    const userResult = await pool.query(
+      "SELECT * FROM users WHERE email=$1",
+      [email]
+    );
+
+    if (userResult.rows.length === 0) {
+      return res.status(400).json({ error: "User not found" });
+    }
+
+    const user = userResult.rows[0];
+
+    const token = crypto.randomBytes(32).toString("hex");
+    const expires = new Date(Date.now() + 3600000);
+
+    await pool.query(
+      "INSERT INTO password_reset_tokens (user_id, token, expires_at) VALUES ($1,$2,$3)",
+      [user.id, token, expires]
+    );
+
+    res.json({
+      message: "Reset token generated",
+      token: token
+    });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+};
+
+
+// ✅ Reset Password
+const resetPassword = async (req, res) => {
+  
+};
+
+
+module.exports = { register, login ,forgotPassword,resetPassword};
