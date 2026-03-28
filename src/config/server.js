@@ -10,4 +10,4 @@ app.use("/notifications", notificationRoutes);
 app.use("/resumes", resumeRoutes);
 app.use("/interviews", interviewRoutes);
 app.use("/reviews", reviewRoutes);
-app.use("/password-reset", passwordResetRoutes);
+// app.use("/password-reset", passwordResetRoutes);

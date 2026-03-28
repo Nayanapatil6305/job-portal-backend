@@ -109,8 +109,50 @@ const forgotPassword = async (req, res) => {
 
 
 // ✅ Reset Password
+// Reset Password
 const resetPassword = async (req, res) => {
-  
+
+  const { token, newPassword } = req.body;
+
+  if (!token || !newPassword) {
+    return res.status(400).json({ error: "Token and new password required" });
+  }
+
+  try {
+
+    const tokenResult = await pool.query(
+      "SELECT * FROM password_reset_tokens WHERE token=$1",
+      [token]
+    );
+
+    if (tokenResult.rows.length === 0) {
+      return res.status(400).json({ error: "Invalid token" });
+    }
+
+    const resetData = tokenResult.rows[0];
+
+    if (new Date(resetData.expires_at) < new Date()) {
+      return res.status(400).json({ error: "Token expired" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+    await pool.query(
+      "UPDATE users SET password=$1 WHERE id=$2",
+      [hashedPassword, resetData.user_id]
+    );
+
+    await pool.query(
+      "DELETE FROM password_reset_tokens WHERE token=$1",
+      [token]
+    );
+
+    res.json({ message: "Password reset successful" });
+
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+
 };
 
 
