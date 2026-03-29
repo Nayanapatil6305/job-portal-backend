@@ -1,6 +1,9 @@
 const express = require("express");
 
 const app = express();
+const adminRoutes = require("./routes/admin.routes");
+const notificationRoutes = require("./routes/notification.routes");
+
 const jobPortal = require("./src/routes/backend.route");
 const authRoutes = require('./src/routes/auth.routes');
 // const userRoutes = require('./src/routes/user.routes');
@@ -20,6 +23,11 @@ app.use("/api/resumes",resumeRoutes);
 app.get("/", (req, res) => {
   res.send("Job Portal Backend Running...");
 });
+
+
+
+app.use("/api/admin", adminRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 
 
